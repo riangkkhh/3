@@ -240,6 +240,12 @@ body,button,input,textarea{font-family:Heebo,"Segoe UI",Arial,sans-serif}
 .ph:has(video) .bot{padding-bottom:64px}.ph:has(video) .side{bottom:150px}
 /* login card */
 .empty svg{margin:0 auto 12px}
+/* custom video player */
+.vp{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:4px;height:34%;border-radius:2px;background:rgba(255,255,255,.3);box-shadow:0 0 0 1px rgba(0,0,0,.18);z-index:3;overflow:hidden;pointer-events:none}
+.vp i{display:block;width:100%;height:0;background:#fff;border-radius:2px;transition:height .25s linear}
+.pp{position:absolute;inset:0;display:grid;place-items:center;color:#fff;z-index:2;opacity:0;pointer-events:none;transition:opacity .2s}.pp.on{opacity:.92}.pp svg{filter:drop-shadow(0 4px 14px rgba(0,0,0,.55))}
+.vw.wide .pp{inset:0 0 0 50%}
+.ph video{cursor:pointer}.ph video::-webkit-media-controls{display:none!important}
 .mod:has(.lgb){width:min(400px,94vw);padding:38px 28px 24px;text-align:center;position:relative;overflow:hidden;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
 .mod:has(.lgb)::before{content:'';position:absolute;inset:0 0 auto 0;height:150px;background:radial-gradient(90% 150% at 15% 0,rgba(255,154,60,.35),transparent 70%),radial-gradient(80% 130% at 92% 0,rgba(240,64,110,.22),transparent 70%);pointer-events:none}
 .mod:has(.lgb)>*{position:relative}
@@ -335,11 +341,11 @@ return `<h2>${I('gear')} הגדרות פרופיל</h2><div class="prof" style="
 /* viewer */
 function openV(id,list){list=list.length?list:vis();let i=Math.max(0,list.findIndex(p=>p.id==id)),vw=document.createElement('div');vw.className='vw';document.body.appendChild(vw);document.body.style.overflow='hidden';const prev=(location.hash&&!location.hash.startsWith('#post-'))?location.hash:'#home';
 const show=()=>{const p=list[i];if(!p)return close();const v=p.type=='video';history.replaceState(null,'','#post-'+p.id);
-vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="-1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" controls autoplay playsinline></video>`:`<img src="${p.src}" alt="">`}</div>
+vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="-1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" autoplay playsinline disablepictureinpicture controlslist="nodownload noremoteplayback" oncontextmenu="return false"></video>`:`<img src="${p.src}" alt="">`}</div>${v?`<div class="vp"><i></i></div><div class="pp">${I('play',30,1)}</div>`:''}
 <div class="top">${p.uid!=ME?`<button class="btn" style="height:34px;padding:0 14px" data-fl="${p.uid}">${fol(ME).includes(p.uid)?'עוקב':'לעקוב'}</button>`:'<span></span>'}<span style="display:flex;gap:6px"><button class="sb" data-edit="${p.id}">${I('edit',16)}</button><button class="sb" data-del="${p.id}">${I('trash',16)}</button></span></div>
 <div class="side"><button class="circ ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',24,S.liked[p.id])}</button><div class="cnt">${lk(p)}</div><button class="circ" data-cm>${I('msg',22)}</button><div class="cnt cc">${(S.cm[p.id]||[]).length}</div><button class="circ" data-share="${p.id}">${I('share',22)}</button></div>
 <div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div>${cmp(p)}</div><button class="arr" data-n="1">${I('l',22)}</button>`;
-const vd=$('video',vw);detect(vw);if(vd)vd.onended=()=>{const o=document.createElement('div');o.className='outro';o.innerHTML='<img src="img/2.png" alt="" style="max-width:60%;max-height:30%;animation:pop .8s both" onerror="this.remove()">';$('.ph',vw).appendChild(o);setTimeout(()=>{o.remove();vd.currentTime=0;vd.play()},3500)}};
+const vd=$('video',vw);detect(vw);if(vd){const pp=$('.pp',vw),fl=$('.vp i',vw);vd.addEventListener('timeupdate',()=>{if(vd.duration)fl.style.height=(vd.currentTime/vd.duration*100)+'%'});vd.addEventListener('pause',()=>pp.classList.add('on'));vd.addEventListener('play',()=>pp.classList.remove('on'));vd.onclick=()=>{vd.paused?vd.play():vd.pause()};const pr=vd.play();pr&&pr.catch&&pr.catch(()=>pp.classList.add('on'))}if(vd)vd.onended=()=>{const o=document.createElement('div');o.className='outro';o.innerHTML='<img src="img/2.png" alt="" style="max-width:60%;max-height:30%;animation:pop .8s both" onerror="this.remove()">';$('.ph',vw).appendChild(o);setTimeout(()=>{o.remove();vd.currentTime=0;vd.play()},3500)}};
 const close=()=>{vw.remove();document.body.style.overflow='';document.removeEventListener('keydown',kd);history.replaceState(null,'',prev);render()};
 const go=n=>{i=(i+n+list.length)%list.length;show()};
 const kd=e=>{if(e.target.tagName=='INPUT'){if(e.key=='Enter'&&e.target.id=='ci')cmAct({dataset:{send:1}},vw,list[i].id);return}if(e.key=='Escape')close();if(e.key=='ArrowRight')go(-1);if(e.key=='ArrowLeft')go(1)};document.addEventListener('keydown',kd);
@@ -482,6 +488,7 @@ document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.datase
 /* @mention suggestions */
 document.addEventListener('input',e=>{const el=e.target;if(!el.matches||!el.matches('#u2,#ci,.mod textarea'))return;const o=$('.mn');o&&o.remove();const v=el.value.slice(0,el.selectionStart),m=v.match(/@([A-Za-z0-9_]*)$/);if(!m)return;const q=m[1].toLowerCase(),l=Object.keys(S.users).filter(u=>u.toLowerCase().startsWith(q)).slice(0,6);if(!l.length)return;const r=el.getBoundingClientRect(),d=document.createElement('div');d.className='mn';d.style.cssText='left:'+r.left+'px;top:'+(r.bottom+4)+'px;width:'+Math.max(r.width,200)+'px';d.innerHTML=l.map(u=>`<a data-mu='${u}'>${av(u,24)}<span dir='ltr'>@${u}</span></a>`).join('');document.body.appendChild(d);
 d.onmousedown=ev=>{const a=ev.target.closest('[data-mu]');if(!a)return;ev.preventDefault();const pos=el.selectionStart,s=v.slice(0,v.length-m[1].length)+a.dataset.mu+' ';el.value=s+el.value.slice(pos);el.setSelectionRange(s.length,s.length);d.remove();el.focus()}});
+document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('video,.ph'))e.preventDefault()});
 window.onhashchange=render;
 (async()=>{seed();await idb();(await idbAll()).forEach(p=>{p.src=typeof p.blob=='string'?p.blob:URL.createObjectURL(p.blob);posts.push(p)});shell();render()})();
 </script>
