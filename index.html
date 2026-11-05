@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Share be</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap">
 <style>
 :root{--bg:#FBF5E9;--card:#FFFDF7;--ink:#2B2118;--mute:#7A6A58;--ac:#E2703A;--ac2:#C2410C;--line:#EADFC8;--sh:0 8px 24px rgba(90,60,20,.14);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1D1812;--card:#2A231B;--ink:#F6EBD6;--mute:#B7A78F;--line:#3A3126;--sh:0 8px 24px rgba(0,0,0,.45);color-scheme:dark}}
@@ -199,6 +200,31 @@ h2{font-size:18px;font-weight:700}h2 svg{color:var(--mute)}
 .prof,.prof[style*=block]:not(.ul){background:var(--line);box-shadow:none;backdrop-filter:none;border-radius:16px;overflow:visible;padding:20px;text-align:start}
 .prof::before,.prof::after{display:none}
 #toast{background:var(--ink);color:var(--bg);box-shadow:none;font-weight:600}
+/* ===== v5: fonts, bottom nav, comments ===== */
+body,button,input,textarea{font-family:Heebo,"Segoe UI",Arial,sans-serif}
+.nvb{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));right:12px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.tr .acts{inset-inline:6px;top:6px;gap:4px}.tr .sb{height:30px;min-width:30px;padding:0 8px;font-size:12px}.tr .sb[data-edit],.tr .sb[data-del]{display:none}
+.ph{width:calc(min(92vh,880px)*.5625);aspect-ratio:auto;max-width:94vw;transition:width .38s cubic-bezier(.2,.8,.2,1)}
+.vw.wide .ph{width:min(96vw,calc(min(92vh,880px)*1.125))}
+.vw.wide .arr{display:none}
+.ph .cmp{position:absolute;top:0;bottom:0;right:0;width:50%;display:flex;flex-direction:column;background:var(--card);color:var(--ink);transform:translateX(100%);opacity:0;pointer-events:none;transition:.38s;z-index:5}
+.vw.wide .ph .cmp{transform:none;opacity:1;pointer-events:auto}
+.vw.wide .ph .m{left:0;right:auto;width:50%}
+.vw.wide .ph>.top,.vw.wide .ph>.bot{inset-inline:auto;left:0;right:50%}.vw.wide .ph>.top{padding:0 14px}
+.cmh{padding:16px 18px;font-weight:700;box-shadow:0 1px 0 var(--line)}
+.cml{flex:1;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:16px}
+.cmt{display:flex;gap:10px;font-size:14px}.cmt p{margin:2px 0;overflow-wrap:anywhere}.cmt b{font-size:13px}
+.qq,.qt span{background:var(--line);border-inline-start:3px solid var(--ac);padding:4px 8px;border-radius:6px;color:var(--mute);font-size:12.5px;margin:3px 0;display:block}
+.ca{display:flex;gap:12px;font-size:12px;color:var(--mute)}.ca a{cursor:pointer}.ca a:hover{color:var(--ac)}
+.cmf{padding:10px 14px 14px;box-shadow:0 -1px 0 var(--line)}.cmf .row{display:flex;gap:8px;align-items:center}.cmf .f{margin:0}.cmf .circ{flex:none}.qt:empty{display:none}.qt{margin-bottom:6px}
+/* ===== v6: accounts, bell, admin ===== */
+#bell{position:relative}.bd{position:absolute;top:-4px;left:-4px;min-width:18px;height:18px;border-radius:9px;background:#E5484D;color:#fff;font:700 11px/18px Heebo,sans-serif;text-align:center;font-style:normal;padding:0 4px}
+.dd{position:fixed;z-index:120;width:min(330px,94vw);max-height:70vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:16px;box-shadow:0 18px 50px -10px rgba(0,0,0,.35);padding:6px}
+.ni{display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;cursor:pointer;font-size:14px;color:var(--ink);text-decoration:none}.ni:hover{background:var(--line)}.ni.un{background:rgba(242,84,45,.1)}.ni small{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
+.mn{position:fixed;z-index:130;background:var(--card);color:var(--ink);border-radius:14px;box-shadow:0 14px 40px -10px rgba(0,0,0,.4);padding:4px}.mn a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:14px}.mn a:hover{background:var(--line)}
+.ap{display:block!important;margin:0 0 14px;max-width:780px;text-align:start!important}.ap>b{display:block;margin-bottom:8px}
+.ar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 0}.ar .f{width:auto;margin:0;display:inline-block;flex:1;min-width:120px}.ar select.f{flex:none;min-width:0}.ar .btn{height:38px;padding:0 14px;font-size:14px}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--bg);border-radius:16px;padding:5px 10px;margin:0 0 6px 6px;font-size:13px}.chip a{cursor:pointer;display:grid;color:var(--mute)}.chip a:hover{color:#E5484D}
 </style>
 </head>
 <body>
@@ -216,10 +242,10 @@ h2{font-size:18px;font-weight:700}h2 svg{color:var(--mute)}
 const P={home:"M3 11l9-8 9 8v10h-6v-6H9v6H3z",film:"M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zM10 9l5 3-5 3z",image:"M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zM3 17l5-5 4 4 3-3 6 6M8.5 9.5h.01",fire:"M12 2c1 4 5 5 5 10a5 5 0 01-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z",biz:"M3 8h18v12H3zM9 8V5h6v3M3 13h18",plus:"M12 5v14M5 12h14",heart:"M12 21s-8-5-8-11a4.5 4.5 0 018-3 4.5 4.5 0 018 3c0 6-8 11-8 11z",share:"M18 8a3 3 0 100-6 3 3 0 000 6zM6 15a3 3 0 100-6 3 3 0 000 6zM18 22a3 3 0 100-6 3 3 0 000 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4",search:"M11 18a7 7 0 100-14 7 7 0 000 14zM21 21l-5-5",gear:"M12 15a3 3 0 100-6 3 3 0 000 6zM19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 3h-4l-.4 3.1a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 3.1h4l.4-3.1a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5z",user:"M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0",x:"M6 6l12 12M18 6L6 18",trash:"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13",edit:"M4 20h4L19 9l-4-4L4 16zM13 7l4 4",l:"M15 5l-7 7 7 7",r:"M9 5l7 7-7 7",up:"M12 16V4M7 9l5-5 5 5M4 20h16",play:"M8 5v14l11-7z"};
 const I=(n,s=22,f)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${f?'currentColor':'none'}" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="${P[n]}"/></svg>`;
 const $=(s,e=document)=>e.querySelector(s),esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ME='u1';
+let ME='';
 let S={users:{u1:{name:'מנהל האתר',about:'',hue:22},u2:{name:'דוד לוי',about:'אוהב לצלם נופים.',hue:200},u3:{name:'יוסי כהן',about:'יוצר תוכן יומיומי.',hue:140},u4:{name:'אורי שמש',about:'עסקים ושיווק.',hue:300}},fol:{u1:['u2'],u2:['u1','u3'],u3:['u1'],u4:['u1','u2']},likes:{},liked:{},del:[],ed:{}};
 try{const o=JSON.parse(localStorage.getItem('sb')||'null');if(o)S={...S,...o}}catch(e){}
-const save=()=>{try{localStorage.setItem('sb',JSON.stringify(S))}catch(e){}};
+S.cm=S.cm||{};const save=()=>{try{localStorage.setItem('sb',JSON.stringify(S))}catch(e){}};
 let posts=[],db=null,q='';
 /* seed images */
 function seed(){const D=['נוף בשקיעה','צבעים של בוקר','רגע שקט ליד המים','סדנה עסקית חדשה','שבת בטבע','עיצוב מינימליסטי','הרים ועננים','קפה ושיחה טובה'];
@@ -237,7 +263,7 @@ const av=(id,s=28)=>{const u=U(id);return u.img?`<img class="av" width="${s}" he
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('s');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('s'),2000)};
 const link=h=>location.href.split('#')[0]+'#'+h;
 const copy=async(h)=>{try{await navigator.clipboard.writeText(link(h));toast('הקישור הועתק')}catch(e){toast(link(h))}};
-const vis=()=>posts.filter(p=>!S.del.includes(p.id)).map(p=>({...p,desc:S.ed[p.id]??p.desc}));
+let vis=()=>posts.filter(p=>!S.del.includes(p.id)&&!S.hid[p.id]).map(p=>({...p,desc:S.ed[p.id]??p.desc}));
 const fol=id=>S.fol[id]||[],followers=id=>Object.keys(S.users).filter(u=>fol(u).includes(id));
 /* logo */
 const LOGO_ON=false;function logo(c,w,h,big){if(!LOGO_ON)return;const r=devicePixelRatio||1;c.width=w*r;c.height=h*r;c.style.width=w+'px';c.style.height=h+'px';const x=c.getContext('2d');x.scale(r,r);
@@ -252,11 +278,11 @@ x.shadowColor='transparent';x.fillStyle='rgba(255,255,255,.28)';x.beginPath();x.
 const NAV=[['home','home','דף הבית'],['film','videos','סרטונים'],['image','images','תמונות'],['fire','hot','החמים'],['biz','biz','תוכן עסקי']];
 function shell(){$('#gbtn').innerHTML=I('user',20)+'<span>התחברות עם גוגל</span>';$('#gbtn').onclick=()=>toast('ההתחברות תתווסף בהמשך');
 $('#plus').innerHTML=I('plus',24);$('#plus').onclick=upload;
-P.moon='M21 13A9 9 0 1111 3a7 7 0 0010 10z';P.sun='M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4';
+P.msg='M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z';P.moon='M21 13A9 9 0 1111 3a7 7 0 0010 10z';P.sun='M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4';
 const rt=document.documentElement,ap=t=>{rt.dataset.theme=t;try{localStorage.setItem('sbt',t)}catch(e){}$('#tg').innerHTML=I(t=='dark'?'sun':'moon',20)};let t0='light';try{t0=localStorage.getItem('sbt')||'light'}catch(e){}ap(t0);$('#tg').onclick=()=>ap(rt.dataset.theme=='dark'?'light':'dark');
 $('#sbox').innerHTML=I('search',20)+'<input id="si" placeholder="חיפוש">';$('#si').oninput=e=>{q=e.target.value.trim();render()};
 $('#logo').onclick=()=>location.hash='home'}
-function nav(cur){$('#nav').innerHTML=NAV.map(n=>`<a class="nv ${cur==n[1]?'on':''}" href="#${n[1]}"><div class="ic">${I(n[0],24)}</div><span>${n[2]}</span></a>`).join('')+`<a class="nv ${cur.startsWith('profile')?'on':''}" href="#profile-${ME}"><div class="ic">${I('user',24)}</div><span>הפרופיל שלי</span></a><a class="nv ${cur=='settings'?'on':''}" href="#settings"><div class="ic">${I('gear',24)}</div><span>הגדרות</span></a>`}
+function nav(cur){$('#nav').innerHTML=NAV.map(n=>`<a class="nv ${cur==n[1]?'on':''}" href="#${n[1]}"><div class="ic">${I(n[0],24)}</div><span>${n[2]}</span></a>`).join('')+`<div class="nvb"><a class="nv ${cur.startsWith('profile')?'on':''}" href="#profile-${ME}"><div class="ic">${I('user',24)}</div><span>הפרופיל שלי</span></a><a class="nv ${cur=='settings'?'on':''}" href="#settings"><div class="ic">${I('gear',24)}</div><span>הגדרות</span></a></div>`}
 /* cards */
 function card(p,list){const v=p.type=='video';return `<div class="card" data-open="${p.id}" ${v?'data-v':''}><div class="m">${v?`<video src="${p.src}#t=0.1" muted loop playsinline preload="metadata"></video>`:`<img src="${p.src}" alt="">`}</div>
 <div class="acts"><button class="sb lk ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',16,S.liked[p.id])}<b>${lk(p)}</b></button><button class="sb" data-share="${p.id}">${I('share',16)}</button>${(!p.seed||1)?`<button class="sb" data-edit="${p.id}">${I('edit',16)}</button><button class="sb" data-del="${p.id}">${I('trash',16)}</button>`:''}</div>
@@ -289,17 +315,25 @@ function openV(id,list){list=list.length?list:vis();let i=Math.max(0,list.findIn
 const show=()=>{const p=list[i];if(!p)return close();const v=p.type=='video';history.replaceState(null,'','#post-'+p.id);
 vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" controls autoplay playsinline></video>`:`<img src="${p.src}" alt="">`}</div>
 <div class="top">${p.uid!=ME?`<button class="btn" style="height:34px;padding:0 14px" data-fl="${p.uid}">${fol(ME).includes(p.uid)?'עוקב':'לעקוב'}</button>`:'<span></span>'}<span style="display:flex;gap:6px"><button class="sb" data-edit="${p.id}">${I('edit',16)}</button><button class="sb" data-del="${p.id}">${I('trash',16)}</button></span></div>
-<div class="side"><button class="circ ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',24,S.liked[p.id])}</button><div class="cnt">${lk(p)}</div><button class="circ" data-share="${p.id}">${I('share',22)}</button></div>
-<div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div></div><button class="arr" data-n="-1">${I('l',22)}</button>`;
+<div class="side"><button class="circ ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',24,S.liked[p.id])}</button><div class="cnt">${lk(p)}</div><button class="circ" data-cm>${I('msg',22)}</button><div class="cnt cc">${(S.cm[p.id]||[]).length}</div><button class="circ" data-share="${p.id}">${I('share',22)}</button></div>
+<div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div>${cmp(p)}</div><button class="arr" data-n="-1">${I('l',22)}</button>`;
 const vd=$('video',vw);detect(vw);if(vd)vd.onended=()=>{const o=document.createElement('div');o.className='outro';o.innerHTML='<canvas></canvas>';$('.ph',vw).appendChild(o);logo($('canvas',o),240,74);setTimeout(()=>{o.remove();vd.currentTime=0;vd.play()},3500)}};
 const close=()=>{vw.remove();document.removeEventListener('keydown',kd);history.replaceState(null,'','#home');render()};
 const go=n=>{i=(i+n+list.length)%list.length;show()};
-const kd=e=>{if(e.key=='Escape')close();if(e.key=='ArrowRight')go(-1);if(e.key=='ArrowLeft')go(1)};document.addEventListener('keydown',kd);
-vw.onclick=e=>{e.stopPropagation();const t=e.target.closest('button,[data-prof]');if(!t){if(e.target==vw)close();return}
-if(t.dataset.x!=null)close();else if(t.dataset.n)go(+t.dataset.n);else if(t.dataset.prof){close();location.hash='profile-'+t.dataset.prof}
+const kd=e=>{if(e.target.tagName=='INPUT'){if(e.key=='Enter'&&e.target.id=='ci')cmAct({dataset:{send:1}},vw,list[i].id);return}if(e.key=='Escape')close();if(e.key=='ArrowRight')go(-1);if(e.key=='ArrowLeft')go(1)};document.addEventListener('keydown',kd);
+vw.onclick=e=>{e.stopPropagation();const t=e.target.closest('button,[data-prof],[data-rp],[data-ce],[data-cd]');if(!t){if(e.target==vw)close();return}
+if(t.dataset.cm!=null)vw.classList.toggle('wide');else if(t.dataset.send||t.dataset.rp||t.dataset.ce||t.dataset.cd)cmAct(t,vw,p0().id);else if(t.dataset.x!=null)close();else if(t.dataset.n)go(+t.dataset.n);else if(t.dataset.prof){close();location.hash='profile-'+t.dataset.prof}
 else if(t.dataset.like){const id=p0().id,was=S.liked[id];toggleLike(id);if(!was)hearts(t);t.classList.toggle('on',!!S.liked[id]);t.innerHTML=I('heart',24,S.liked[id]);$('.cnt',vw).textContent=lk(p0())}else if(t.dataset.share)copy('post-'+p0().id);else if(t.dataset.fl){toggleFol(t.dataset.fl);t.textContent=fol(ME).includes(t.dataset.fl)?'עוקב':'לעקוב'}
 else if(t.dataset.edit)editD(p0().id,()=>{list=list.map(x=>x.id==p0().id?{...x,desc:S.ed[x.id]}:x);show()});else if(t.dataset.del){delP(p0().id);list.splice(i,1);i=Math.min(i,list.length-1);show()}};
 const p0=()=>list[i];show()}
+function cmp(p){return `<div class="cmp"><div class="cmh">תגובות</div><div class="cml">${cml(p.id)}</div><div class="cmf"><div class="qt"></div><div class="row"><input class="f" id="ci" placeholder="כתיבת תגובה" autocomplete="off"><button class="circ" data-send>${I('l',20)}</button></div></div></div>`}
+function cml(id){const a=S.cm[id]||[];return a.length?a.map(c=>`<div class="cmt">${av(c.uid,32)}<div><b>${esc(U(c.uid).name)}</b>${c.q?`<div class="qq">${esc(c.q)}</div>`:''}<p>${esc(c.t)}</p><span class="ca"><a data-rp="${c.id}">הגב</a><a data-ce="${c.id}">עריכה</a><a data-cd="${c.id}">מחיקה</a></span></div></div>`).join(''):'<div class="empty">אין עדיין תגובות. אפשר להיות הראשונים.</div>'}
+let QT=null,ED=null;
+function cmAct(t,vw,id){const a=S.cm[id]=S.cm[id]||[],d=t.dataset,L=()=>{$('.cml',vw).innerHTML=cml(id);$('.cc',vw).textContent=S.cm[id].length;save()};
+if(d.send){const i=$('#ci',vw),v=i.value.trim();if(!v)return;if(ED){const c=a.find(x=>x.id==ED);if(c)c.t=v;ED=null}else a.push({id:'c'+Date.now(),uid:ME,t:v,q:QT,ts:Date.now()});i.value='';QT=null;$('.qt',vw).innerHTML='';L();const l=$('.cml',vw);l.scrollTop=l.scrollHeight}
+else if(d.rp){const c=a.find(x=>x.id==d.rp);QT=c.t.slice(0,90);ED=null;$('.qt',vw).innerHTML=`<span>${esc(QT)}</span>`;$('#ci',vw).focus()}
+else if(d.cd){S.cm[id]=a.filter(x=>x.id!=d.cd);L()}
+else if(d.ce){const c=a.find(x=>x.id==d.ce);ED=c.id;QT=null;$('.qt',vw).innerHTML='';const i=$('#ci',vw);i.value=c.t;i.focus()}}
 function detect(vw){const m=$('.m video,.m img',vw),sd=$('.side',vw);if(!m||!sd)return;const c=document.createElement('canvas');c.width=c.height=24;const x=c.getContext('2d',{willReadFrequently:true});
 const chk=()=>{try{x.drawImage(m,0,0,24,24);const d=x.getImageData(0,12,10,12).data;let s=0;for(let i=0;i<d.length;i+=4)s+=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];sd.classList.toggle('dk',s/(d.length/4)>140)}catch(e){sd.classList.add('dk')}};
 if(m.tagName=='IMG'){m.complete?chk():m.onload=chk}else{m.onloadeddata=chk;let t=0;m.ontimeupdate=()=>{const n=Date.now();if(n-t>1200){t=n;chk()}}}}
@@ -324,7 +358,7 @@ dz.onclick=()=>inp.click();inp.onchange=()=>pick(inp.files[0]);dz.ondragover=e=>
 b.onclick=e=>{if(e.target==b||e.target.closest('[data-c]'))b.remove()};
 $('#go',b).onclick=async()=>{const url=$('#u1',b).value.trim(),txt=$('#u3',b).value;if(!file&&!url)return toast('בחרו קובץ או הזינו כתובת');
 let blob=file,type=kind||'image';if(type=='image')blob=await wm(file||url,txt);if(!blob)return toast('לא ניתן לטעון את התמונה');
-const p={id:'n'+Date.now(),uid:ME,type,desc:$('#u2',b).value,biz:$('#u4',b).checked,ts:Date.now(),blob};idbPut(p);p.src=typeof blob=='string'?blob:URL.createObjectURL(blob);posts.push(p);b.remove();location.hash='home';render();toast('פורסם בהצלחה')}}
+const p={id:'n'+Date.now(),uid:ME,type,desc:$('#u2',b).value,biz:$('#u4',b).checked,ts:Date.now(),blob};idbPut(p);tags(p.desc,'tag',{pid:p.id});p.src=typeof blob=='string'?blob:URL.createObjectURL(blob);posts.push(p);b.remove();location.hash='home';render();toast('פורסם בהצלחה')}}
 function wm(src,txt){return new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{const s=Math.min(1,1600/im.width),w=im.width*s,h=im.height*s,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0,w,h);
 if(txt){x.font=`800 ${w*.07}px "Segoe UI",Arial`;x.textAlign='center';x.fillStyle='#fff';x.strokeStyle='rgba(0,0,0,.7)';x.lineWidth=w*.012;x.strokeText(txt,w/2,h*.88,w*.9);x.fillText(txt,w/2,h*.88,w*.9)}
 const lw=Math.max(120,w*.22),lc=document.createElement('canvas');logo(lc,lw,lw*.31);lc.style.width=lc.width+'px';x.globalAlpha=.9;x.drawImage(lc,w/2-lw/2,h*.02,lw,lw*.31);c.toBlob(b=>res(b),'image/jpeg',.9)}catch(e){res(typeof src=='string'?src:null)}};
@@ -343,12 +377,88 @@ if(t.id=='ss'){S.users[ME].name=$('#sn').value||'מנהל האתר';S.users[ME].
 document.addEventListener('change',e=>{if(e.target.id=='avf'){const f=e.target.files[0],r=new FileReader();r.onload=()=>{S.users[ME].img=r.result;save();render()};f&&r.readAsDataURL(f)}});
 document.addEventListener('mouseover',e=>{const c=e.target.closest('.card[data-v]');if(c){const v=$('video',c);v&&v.play().catch(()=>{})}});
 document.addEventListener('mouseout',e=>{const c=e.target.closest('.card[data-v]');if(c&&!c.contains(e.relatedTarget)){const v=$('video',c);v&&v.pause()}});
+/* ===== accounts, admin, notifications (all local, localStorage) ===== */
+const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
+['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
+try{const m=localStorage.getItem('sbme');if(m&&S.users[m])ME=m}catch(e){}
+Object.assign(P,{bell:'M18 16v-5a6 6 0 10-12 0v5l-2 2h16zM10 21a2 2 0 004 0',shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',eyeoff:'M3 3l18 18M10.6 6.1A9 9 0 0121 12a13 13 0 01-2.6 3.4M6.3 6.4A13 13 0 003 12s3 6 9 6a9 9 0 003.4-.7'});
+const em=u=>((S.users[u]||{}).email||'').toLowerCase(),isAdmin=()=>!!ME&&em(ME)==ADMIN_EMAIL,isBlocked=()=>!!ME&&S.blk[ME]>Date.now();
+const canUp=()=>!!ME&&!isBlocked()&&(isAdmin()||S.up.includes(em(ME))),canBiz=()=>isAdmin()||(!!ME&&S.bz.includes(em(ME)));
+const postUid=id=>(posts.find(p=>p.id==id)||{}).uid,canMod=id=>!!ME&&(isAdmin()||postUid(id)==ME);
+const stop=e=>{e.stopPropagation();e.preventDefault()};
+function blockedMsg(){toast(S.blk[ME]>8e15?'החשבון חסום לצמיתות':'החשבון חסום עד '+new Date(S.blk[ME]).toLocaleString('he-IL'))}
+function mkModal(h,close){const b=document.createElement('div');b.className='bg';b.style.zIndex=95;b.innerHTML="<div class='mod'>"+h+"</div>";document.body.appendChild(b);if(close)b.onclick=e=>{if(e.target==b||e.target.closest('[data-c]'))b.remove()};return b}
+function dd(a,h){const o=$('.dd');if(o){o.remove();if(o.dataset.a==a.id)return}const r=a.getBoundingClientRect(),d=document.createElement('div');d.className='dd';d.dataset.a=a.id;d.style.cssText='top:'+(r.bottom+8)+'px;left:'+Math.max(8,Math.min(r.left,innerWidth-340))+'px';d.innerHTML=h;document.body.appendChild(d)}
+/* login */
+function loginModal(){const b=mkModal(`<h3>התחברות <button class='circ' style='width:36px;height:36px' data-c>${I('x',18)}</button></h3><div id='gl' style='display:flex;justify-content:center;min-height:44px'></div><div id='dm' hidden><p style='color:var(--mute);font-size:13px;margin:4px 0 8px'>מצב הדגמה (ללא חיבור לגוגל): הזינו כתובת מייל</p><input class='f' id='le' type='email' dir='ltr' placeholder='name@gmail.com'><button class='btn' id='lb' style='width:100%'>המשך</button></div>`,1);
+const demo=()=>{$('#dm',b).hidden=false;$('#lb',b).onclick=()=>{const m=$('#le',b).value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m))return toast('כתובת מייל לא תקינה');b.remove();finishLogin(m)}};
+const gs=()=>{google.accounts.id.initialize({client_id:CLIENT_ID,callback:r=>{try{const j=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));b.remove();finishLogin(j.email.toLowerCase())}catch(x){toast('ההתחברות נכשלה')}}});google.accounts.id.renderButton($('#gl',b),{theme:'outline',size:'large',text:'signin_with',locale:'he'})};
+if(!CLIENT_ID)return demo();if(window.google&&google.accounts)return gs();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=gs;s.onerror=demo;document.head.appendChild(s)}
+function finishLogin(m){const u=S.acc[m];if(u&&S.users[u])return setMe(u);if(m==ADMIN_EMAIL){S.users.mont_blanc=Object.assign(S.users.mont_blanc||{name:'mont_blanc',about:'',hue:22},{email:m});S.acc[m]='mont_blanc';save();return setMe('mont_blanc')}nameModal(m)}
+function setMe(u){ME=u;try{localStorage.setItem('sbme',u)}catch(e){}authUI();render();showBc();toast('מחובר בתור '+U(u).name)}
+function logout(){ME='';try{localStorage.removeItem('sbme')}catch(e){}authUI();location.hash='home';render()}
+const taken=s=>s.toLowerCase()=='mont_blanc'||Object.keys(S.users).some(k=>k.toLowerCase()==s.toLowerCase());
+function nameModal(m){const base=(m.split('@')[0].replace(/[^A-Za-z0-9_]/g,'_').replace(/^_+|_+$/g,'')||'user').slice(0,20);let s=base,i=1;while(taken(s))s=base+(++i);
+const b=mkModal(`<h3>בחירת שם משתמש</h3><p style='color:var(--mute);font-size:14px;margin:0 0 8px'>אותיות באנגלית, מספרים וקו תחתון (_) בלבד. השם הזה יופיע בקישור לפרופיל ובתיוגים.</p><input class='f' id='nu' dir='ltr' value='${s}'><div id='ne' style='color:#E5484D;font-size:13px;min-height:20px'></div><div style='display:flex;gap:8px'><button class='btn' id='nb'>המשך</button><button class='btn o' data-c>ביטול</button></div>`,0);
+$('[data-c]',b).onclick=()=>b.remove();const chk=()=>{const v=$('#nu',b).value.trim();const e=!/^[A-Za-z0-9_]{3,24}$/.test(v)?'3 עד 24 תווים: אותיות באנגלית, מספרים ו-_ בלבד':taken(v)?'השם כבר תפוס':'';$('#ne',b).textContent=e;return e?'':v};$('#nu',b).oninput=chk;
+$('#nb',b).onclick=()=>{const v=chk();if(!v)return;S.users[v]={name:v,about:'',hue:Math.floor(Math.random()*360),email:m};S.acc[m]=v;save();b.remove();setMe(v)}}
+function authUI(){const g=$('#gbtn');if(!g)return;if(ME){g.innerHTML=av(ME,28)+'<span>'+esc(U(ME).name)+'</span>';g.onclick=()=>dd(g,`<a class='ni' data-m='profile'>${I('user',18)}<span>הפרופיל שלי</span></a><a class='ni' data-m='settings'>${I('gear',18)}<span>הגדרות</span></a><a class='ni' data-m='out'>${I('x',18)}<span>יציאה</span></a>`)}else{g.innerHTML=I('user',20)+'<span>התחברות עם גוגל</span>';g.onclick=loginModal}
+let b=$('#bell');if(ME){const n=(S.nt[ME]||[]).filter(x=>!x.read).length;if(!b){b=document.createElement('button');b.id='bell';b.className='circ';b.setAttribute('aria-label','התראות');g.after(b);b.onclick=bellToggle}b.innerHTML=I('bell',22)+(n?`<i class='bd'>${n}</i>`:'')}else if(b)b.remove();const p=$('#plus');if(p)p.style.display=canUp()?'':'none'}
+/* notifications */
+function notify(to,type,d){d=d||{};if(!to||!S.users[to]||(to==ME&&type!='admin'))return;const ns=S.users[to].ns||{};if(type!='admin'&&ns[type]===0)return;const l=S.nt[to]=S.nt[to]||[];if((type=='like'||type=='follow')&&l.some(n=>n.type==type&&n.from==ME&&n.pid==d.pid))return;l.unshift({id:'n'+Date.now()+Math.random(),type,from:ME,pid:d.pid,t:d.t,ts:Date.now(),read:0});S.nt[to]=l.slice(0,60);save()}
+function tags(text,type,d){(String(text||'').match(/@([A-Za-z0-9_]+)/g)||[]).forEach(m=>{const k=Object.keys(S.users).find(x=>x.toLowerCase()==m.slice(1).toLowerCase());if(k)notify(k,type,d)})}
+const nTxt=n=>{const f='@'+((S.users[n.from]||{}).name||n.from);return{follow:f+' התחיל/ה לעקוב אחריך',like:f+' אהב/ה את התוכן שלך',comment:f+' הגיב/ה על התוכן שלך',reply:f+' ענה/תה לתגובה שלך',tag:f+' תייג/ה אותך',admin:'הודעה מהמנהל: '+(n.t||'')}[n.type]};
+function bellToggle(){const a=$('#bell'),l=S.nt[ME]||[];dd(a,l.length?l.map(n=>`<a class='ni ${n.read?'':'un'}' data-nl='${n.pid?'post-'+n.pid:(n.type=='follow'?'profile-'+n.from:'')}'>${av(n.from||ME,30)}<span>${esc(nTxt(n))}<small>${new Date(n.ts).toLocaleString('he-IL')}</small></span></a>`).join(''):"<div class='empty' style='padding:24px'>אין התראות</div>");l.forEach(n=>n.read=1);save();const n0=$('.bd',a);n0&&n0.remove()}
+function showBc(){const k=ME||'guest';if(!S.bc||S.seen[k]==S.bc.id)return;const b=mkModal(`<h3>הודעה מהמנהל</h3><p style='white-space:pre-wrap'>${esc(S.bc.text)}</p><button class='btn' style='width:100%'>הבנתי</button>`,0);$('.btn',b).onclick=()=>{S.seen[k]=S.bc.id;save();b.remove()}}
+/* wrappers */
+const _sh=shell;shell=function(){_sh();authUI();showBc()};
+const _nav=nav;nav=function(c){_nav(c);if(isAdmin()){const x=$('.nvb');x&&x.insertAdjacentHTML('afterbegin',`<a class='nv ${c=='admin'?'on':''}' href='#admin'><div class='ic'>${I('shield',24)}</div><span>ניהול</span></a>`)}};
+const _tl=toggleLike;toggleLike=function(id){const w=S.liked[id];_tl(id);if(!w&&S.liked[id])notify(postUid(id),'like',{pid:id})};
+const _tf=toggleFol;toggleFol=function(id){_tf(id);if((S.fol[ME]||[]).includes(id))notify(id,'follow')};
+const _ca=cmAct;cmAct=function(t,vw,id){const n0=(S.cm[id]||[]).length;_ca(t,vw,id);const a=S.cm[id]||[];if(t.dataset.send&&a.length>n0){const c=a[a.length-1];notify(postUid(id),'comment',{pid:id});if(c.q){const o=a.find(x=>x!==c&&x.t.slice(0,90)==c.q);if(o)notify(o.uid,'reply',{pid:id})}tags(c.t,'tag',{pid:id})}};
+cml=function(id){const a=S.cm[id]||[];return a.length?a.map(c=>{const ok=ME&&(c.uid==ME||isAdmin());return `<div class='cmt'>${av(c.uid,32)}<div><b>${esc(U(c.uid).name)}</b>${c.q?`<div class='qq'>${esc(c.q)}</div>`:''}<p>${esc(c.t)}</p><span class='ca'><a data-rp='${c.id}'>הגב</a>${ok?`<a data-ce='${c.id}'>עריכה</a><a data-cd='${c.id}'>מחיקה</a>`:''}</span></div></div>`}).join(''):"<div class='empty'>אין עדיין תגובות. אפשר להיות הראשונים.</div>"};
+const _up=upload;upload=function(){_up();const b=[...document.querySelectorAll('.bg')].pop(),c=$('#u4',b);if(c&&!canBiz())c.closest('label').style.display='none'};
+const _r=render;render=function(){const h=(location.hash||'#home').slice(1);if(!ME&&(h=='profile-'||h=='settings'||h=='admin')){location.hash='home';loginModal();return}
+if(h=='admin'){if(!isAdmin()){location.hash='home';return}nav(h);$('#main').innerHTML=adminHTML();window.cur=[];return}_r();if(h.startsWith('profile-'))adminProf(h.slice(8));if(h=='settings')setX();authUI()};
+function setX(){const ns=U(ME).ns||{};$('#main').insertAdjacentHTML('beforeend',`<h2>${I('bell')} התראות</h2><div class='prof ap'>${[['follow','מעקבים אחריי'],['like','לייקים'],['comment','תגובות על התוכן שלי'],['reply','תשובות לתגובות שלי'],['tag','תיוגים']].map(x=>`<label style='display:flex;gap:10px;padding:6px 0'><input type='checkbox' data-ns='${x[0]}' ${ns[x[0]]===0?'':'checked'}> ${x[1]}</label>`).join('')}</div>`)}
+/* admin */
+function admRow(u){const x=U(u),bl=S.blk[u]>Date.now();return `<div class='ar'>${av(u,36)}<div style='flex:1;min-width:140px'><b>@${esc(u)}</b><br><small style='color:var(--mute)'>${esc(x.email||'משתמש הדגמה')}${bl?' · חסום':''}</small></div>${bl?`<button class='btn o' data-adm='unblock' data-u='${u}'>שחרור חסימה</button>`:`<select class='f bs'><option value='1'>שעה</option><option value='24'>יום</option><option value='168'>שבוע</option><option value='720'>חודש</option><option value='inf'>לצמיתות</option></select><button class='btn o' data-adm='block' data-u='${u}'>חסימה</button>`}<input class='f ms' placeholder='הודעה למשתמש'><button class='btn o' data-adm='msg' data-u='${u}'>שליחה</button><button class='btn o' data-adm='del' data-u='${u}'>מחיקת משתמש</button></div>`}
+function adminProf(id){const p=$('.pfi');if(p&&isAdmin()&&id!=ME&&S.users[id])p.insertAdjacentHTML('beforeend',`<div class='prof ap' style='margin-top:14px;padding:12px'>${admRow(id)}</div>`)}
+function adminHTML(){const us=Object.keys(S.users).filter(u=>u!=ME),hid=posts.filter(p=>S.hid[p.id]&&!S.del.includes(p.id)),ch=(l,k)=>l.map(e=>`<span class='chip'>${esc(e)}<a data-rm='${esc(e)}' data-l='${k}'>${I('x',14)}</a></span>`).join('')||"<small style='color:var(--mute)'>אין</small>";
+return `<h2>${I('shield')} פאנל ניהול</h2><div class='prof ap'><b>הודעה קופצת לכל המשתמשים</b><textarea class='f' id='bct' rows='2' placeholder='הטקסט שיוצג בכניסה לאתר'>${esc(S.bc?S.bc.text:'')}</textarea><div style='display:flex;gap:8px'><button class='btn' data-bc='1'>פרסום</button><button class='btn o' data-bc='0'>הסרה</button></div></div>
+<div class='prof ap'><b>מי יכול להעלות תוכן (מיילים)</b><div>${ch(S.up,'up')}</div><div class='ar'><input class='f' id='eu' dir='ltr' placeholder='email@gmail.com'><button class='btn' data-add='up'>הוספה</button></div></div>
+<div class='prof ap'><b>מי יכול להעלות תוכן עסקי (מיילים)</b><div>${ch(S.bz,'bz')}</div><div class='ar'><input class='f' id='eb' dir='ltr' placeholder='email@gmail.com'><button class='btn' data-add='bz'>הוספה</button></div></div>
+<h2>${I('user')} משתמשים</h2><div class='prof ap'>${us.map(admRow).join('')||'אין משתמשים'}</div>
+<h2>${I('eyeoff')} תוכן מוסתר</h2><div class='prof ap'>${hid.map(p=>`<div class='ar'>${p.type=='video'?`<video src='${p.src}#t=0.1' style='width:44px;height:64px;object-fit:cover;border-radius:8px'></video>`:`<img src='${p.src}' style='width:44px;height:64px;object-fit:cover;border-radius:8px' alt=''>`}<span style='flex:1'>${esc((S.ed[p.id]??p.desc)||'ללא תיאור')}</span><button class='btn o' data-restore='${p.id}'>שחזור</button></div>`).join('')||'<small>אין תוכן מוסתר</small>'}</div>`}
+function delUser(u){posts.filter(p=>p.uid==u).forEach(p=>{if(!p.seed)idbDel(p.id);S.del.push(p.id)});Object.keys(S.cm).forEach(k=>S.cm[k]=S.cm[k].filter(c=>c.uid!=u));delete S.users[u];delete S.fol[u];Object.keys(S.fol).forEach(k=>S.fol[k]=S.fol[k].filter(x=>x!=u));Object.keys(S.acc).forEach(e=>{if(S.acc[e]==u)delete S.acc[e]});delete S.nt[u];delete S.blk[u];save()}
+function fix(){document.querySelectorAll('[data-edit],[data-del]').forEach(b=>{if(!canMod(b.dataset.edit||b.dataset.del))b.remove()});if(isAdmin())document.querySelectorAll('.sb[data-del]').forEach(b=>{if(!b.parentNode.querySelector('[data-hide]'))b.insertAdjacentHTML('beforebegin',`<button class='sb' data-hide='${b.dataset.del}' title='הסתרה'>${I('eyeoff',16)}</button>`)})}
+let fx=0;new MutationObserver(()=>{if(fx)return;fx=1;requestAnimationFrame(()=>{fx=0;fix()})}).observe(document.body,{childList:true,subtree:true});
+/* gating (capture phase) */
+document.addEventListener('click',e=>{const t=e.target,c=s=>t.closest(s);let a;
+if(a=c('[data-hide]')){stop(e);if(!isAdmin())return;S.hid[a.dataset.hide]=1;save();toast('התוכן הוסתר ואפשר לשחזר אותו בפאנל הניהול');const x=$('.vw [data-x]');x?x.click():render();return}
+if(c('[data-like],[data-fl],[data-send],[data-rp]')){if(!ME){stop(e);loginModal();return}if(isBlocked()){stop(e);blockedMsg();return}}
+if(a=c('[data-edit],[data-del]')){if(!canMod(a.dataset.edit||a.dataset.del))stop(e)}
+if(c('#plus')){stop(e);if(!ME)loginModal();else if(isBlocked())blockedMsg();else if(!canUp())toast('אין לך הרשאת העלאה');else upload()}},true);
+document.addEventListener('click',e=>{const t=e.target;let a;
+if(!t.closest('.dd,#bell,#gbtn')){const d=$('.dd');d&&d.remove()}const mn=$('.mn');mn&&mn.remove();
+if(a=t.closest('[data-m]')){const k=a.dataset.m;$('.dd').remove();if(k=='out')logout();else location.hash=k=='profile'?'profile-'+ME:'settings';return}
+if(a=t.closest('[data-nl]')){$('.dd').remove();if(a.dataset.nl)location.hash=a.dataset.nl;return}
+if(!isAdmin())return;
+if(a=t.closest('[data-adm]')){const u=a.dataset.u,k=a.dataset.adm,r=a.closest('.ar');
+if(k=='block'){const v=$('select',r).value;S.blk[u]=v=='inf'?9e15:Date.now()+v*36e5;notify(u,'admin',{t:'חשבונך נחסם'});save();toast('המשתמש נחסם');render()}
+else if(k=='unblock'){delete S.blk[u];save();render()}
+else if(k=='msg'){const i=$('.ms',r),v=i.value.trim();if(!v)return;notify(u,'admin',{t:v});i.value='';toast('ההודעה נשלחה')}
+else if(k=='del'){if(!a.dataset.s){a.dataset.s=1;a.textContent='לחצו שוב לאישור';return}delUser(u);toast('המשתמש והתוכן שלו נמחקו');if(location.hash.startsWith('#profile-'))location.hash='admin';else render()}return}
+if(a=t.closest('[data-bc]')){if(a.dataset.bc=='1'){const v=$('#bct').value.trim();if(!v)return;S.bc={id:Date.now(),text:v};toast('ההודעה פורסמה')}else{S.bc=null;toast('ההודעה הוסרה')}save();return}
+if(a=t.closest('[data-add]')){const k=a.dataset.add,i=$(k=='up'?'#eu':'#eb'),v=i.value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))return toast('כתובת מייל לא תקינה');const l=S[k];if(!l.includes(v))l.push(v);save();render();return}
+if(a=t.closest('[data-rm]')){const l=S[a.dataset.l];const i=l.indexOf(a.dataset.rm);if(i>=0)l.splice(i,1);save();render();return}
+if(a=t.closest('[data-restore]')){delete S.hid[a.dataset.restore];save();render()}});
+document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.ns;if(k&&ME){const u=S.users[ME];u.ns=u.ns||{};u.ns[k]=e.target.checked?1:0;save()}});
+/* @mention suggestions */
+document.addEventListener('input',e=>{const el=e.target;if(!el.matches||!el.matches('#u2,#ci,.mod textarea'))return;const o=$('.mn');o&&o.remove();const v=el.value.slice(0,el.selectionStart),m=v.match(/@([A-Za-z0-9_]*)$/);if(!m)return;const q=m[1].toLowerCase(),l=Object.keys(S.users).filter(u=>u.toLowerCase().startsWith(q)).slice(0,6);if(!l.length)return;const r=el.getBoundingClientRect(),d=document.createElement('div');d.className='mn';d.style.cssText='left:'+r.left+'px;top:'+(r.bottom+4)+'px;width:'+Math.max(r.width,200)+'px';d.innerHTML=l.map(u=>`<a data-mu='${u}'>${av(u,24)}<span dir='ltr'>@${u}</span></a>`).join('');document.body.appendChild(d);
+d.onmousedown=ev=>{const a=ev.target.closest('[data-mu]');if(!a)return;ev.preventDefault();const pos=el.selectionStart,s=v.slice(0,v.length-m[1].length)+a.dataset.mu+' ';el.value=s+el.value.slice(pos);el.setSelectionRange(s.length,s.length);d.remove();el.focus()}});
 window.onhashchange=render;
 (async()=>{seed();await idb();(await idbAll()).forEach(p=>{p.src=typeof p.blob=='string'?p.blob:URL.createObjectURL(p.blob);posts.push(p)});shell();render()})();
 </script>
 </body>
 </html>
-
-<!-- Injection By NetFree -->
-<script src="//netfree.link/injection-script/go-payment.js" type="text/javascript" async ></script>
-<script src="//netfree.link/injection-script/popup-card-init.js" type="text/javascript" async ></script>
