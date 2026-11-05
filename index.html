@@ -227,7 +227,7 @@ body,button,input,textarea{font-family:Heebo,"Segoe UI",Arial,sans-serif}
 .chip{display:inline-flex;gap:6px;align-items:center;background:var(--bg);border-radius:16px;padding:5px 10px;margin:0 0 6px 6px;font-size:13px}.chip a{cursor:pointer;display:grid;color:var(--mute)}.chip a:hover{color:#E5484D}
 /* ===== v7: comments open on the left, smooth ===== */
 .ph{transition:width .42s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1)}
-.vw.wide .ph{transform:translateX(calc(min(92vh,880px)*-.28125))}
+.vw.wide .ph{transform:none}
 .ph .m{inset:0 0 0 auto;transition:width .42s cubic-bezier(.2,.8,.2,1)}
 .ph>.top{left:14px;right:14px;transition:left .42s cubic-bezier(.2,.8,.2,1)}
 .ph>.bot{left:0;right:0;transition:left .42s cubic-bezier(.2,.8,.2,1)}
@@ -239,6 +239,7 @@ body,button,input,textarea{font-family:Heebo,"Segoe UI",Arial,sans-serif}
 .ph>.bot{pointer-events:none}.ph>.bot .who{pointer-events:auto}
 .ph:has(video) .bot{padding-bottom:64px}.ph:has(video) .side{bottom:150px}
 /* login card */
+.empty svg{margin:0 auto 12px}
 .mod:has(.lgb){width:min(400px,94vw);padding:38px 28px 24px;text-align:center;position:relative;overflow:hidden;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
 .mod:has(.lgb)::before{content:'';position:absolute;inset:0 0 auto 0;height:150px;background:radial-gradient(90% 150% at 15% 0,rgba(255,154,60,.35),transparent 70%),radial-gradient(80% 130% at 92% 0,rgba(240,64,110,.22),transparent 70%);pointer-events:none}
 .mod:has(.lgb)>*{position:relative}
@@ -270,7 +271,7 @@ S.cm=S.cm||{};const save=()=>{try{localStorage.setItem('sb',JSON.stringify(S))}c
 let posts=[],db=null,q='';
 /* seed images */
 function seed(){const D=['נוף בשקיעה','צבעים של בוקר','רגע שקט ליד המים','סדנה עסקית חדשה','שבת בטבע','עיצוב מינימליסטי','הרים ועננים','קפה ושיחה טובה'];
-D.forEach((d,i)=>{const c=document.createElement('canvas');c.width=360;c.height=640;const x=c.getContext('2d'),h=(i*47+20)%360,g=x.createLinearGradient(0,0,360,640);g.addColorStop(0,`hsl(${h},80%,62%)`);g.addColorStop(1,`hsl(${h+60},70%,35%)`);x.fillStyle=g;x.fillRect(0,0,360,640);x.fillStyle='rgba(255,255,255,.22)';x.beginPath();x.arc(100+i*20,200,90+i*6,0,7);x.fill();x.beginPath();x.arc(260,430,130,0,7);x.fill();
+[].forEach((d,i)=>{const c=document.createElement('canvas');c.width=360;c.height=640;const x=c.getContext('2d'),h=(i*47+20)%360,g=x.createLinearGradient(0,0,360,640);g.addColorStop(0,`hsl(${h},80%,62%)`);g.addColorStop(1,`hsl(${h+60},70%,35%)`);x.fillStyle=g;x.fillRect(0,0,360,640);x.fillStyle='rgba(255,255,255,.22)';x.beginPath();x.arc(100+i*20,200,90+i*6,0,7);x.fill();x.beginPath();x.arc(260,430,130,0,7);x.fill();
 posts.push({id:'p'+(i+1),uid:'u'+(2+i%3),type:'image',src:c.toDataURL('image/jpeg',.7),desc:d+' – תיאור קצר שמראה איך נראה טקסט ארוך יותר בכרטיס, והוא נחתך בצורה יפה.',biz:i==3||i==7,ts:Date.now()-i*3600e3*5,base:[42,17,63,8,29,51,12,35][i],seed:1})})}
 /* IDB */
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('sharebe',1);q.onupgradeneeded=()=>q.result.createObjectStore('posts',{keyPath:'id'});q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
@@ -400,7 +401,7 @@ document.addEventListener('mouseover',e=>{const c=e.target.closest('.card[data-v
 document.addEventListener('mouseout',e=>{const c=e.target.closest('.card[data-v]');if(c&&!c.contains(e.relatedTarget)){const v=$('video',c);v&&v.pause()}});
 /* ===== accounts, admin, notifications (all local, localStorage) ===== */
 const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='908669720823-djgpsa2nugjqpicltbjlpvg94eu460u1.apps.googleusercontent.com';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
-['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
+['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});['u1','u2','u3','u4'].forEach(k=>{if(S.users[k]&&!S.users[k].email){delete S.users[k];delete S.fol[k]}});Object.keys(S.fol).forEach(k=>S.fol[k]=(S.fol[k]||[]).filter(x=>S.users[x]));S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
 try{const m=localStorage.getItem('sbme');if(m&&S.users[m])ME=m}catch(e){}
 Object.assign(P,{bell:'M18 16v-5a6 6 0 10-12 0v5l-2 2h16zM10 21a2 2 0 004 0',shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',eyeoff:'M3 3l18 18M10.6 6.1A9 9 0 0121 12a13 13 0 01-2.6 3.4M6.3 6.4A13 13 0 003 12s3 6 9 6a9 9 0 003.4-.7'});
 const em=u=>((S.users[u]||{}).email||'').toLowerCase(),isAdmin=()=>!!ME&&em(ME)==ADMIN_EMAIL,isBlocked=()=>!!ME&&S.blk[ME]>Date.now();
@@ -443,7 +444,7 @@ const _ca=cmAct;cmAct=function(t,vw,id){const n0=(S.cm[id]||[]).length;_ca(t,vw,
 cml=function(id){const a=S.cm[id]||[];return a.length?a.map(c=>{const ok=ME&&(c.uid==ME||isAdmin());return `<div class='cmt'>${av(c.uid,32)}<div><b>${esc(U(c.uid).name)}</b>${c.q?`<div class='qq'>${esc(c.q)}</div>`:''}<p>${esc(c.t)}</p><span class='ca'><a data-rp='${c.id}'>הגב</a>${ok?`<a data-ce='${c.id}'>עריכה</a><a data-cd='${c.id}'>מחיקה</a>`:''}</span></div></div>`}).join(''):"<div class='empty'>אין עדיין תגובות. אפשר להיות הראשונים.</div>"};
 const _up=upload;upload=function(){_up();const b=[...document.querySelectorAll('.bg')].pop(),c=$('#u4',b);if(c&&!canBiz())c.closest('label').style.display='none'};
 const _r=render;render=function(){const h=(location.hash||'#home').slice(1);if(!ME&&(h=='profile-'||h=='settings'||h=='admin')){location.hash='home';loginModal();return}
-if(h=='admin'){if(!isAdmin()){location.hash='home';return}nav(h);$('#main').innerHTML=adminHTML();window.cur=[];return}_r();if(h.startsWith('profile-'))adminProf(h.slice(8));if(h=='settings')setX();authUI()};
+if(h=='admin'){if(!isAdmin()){location.hash='home';return}nav(h);$('#main').innerHTML=adminHTML();window.cur=[];return}_r();if(h=='home'&&!$('.mq .card')){const m=$('.mq');if(m){const hh=m.previousElementSibling;hh&&hh.remove();m.remove()}}if(h.startsWith('profile-'))adminProf(h.slice(8));if(h=='settings')setX();authUI()};
 function setX(){const ns=U(ME).ns||{};$('#main').insertAdjacentHTML('beforeend',`<h2>${I('bell')} התראות</h2><div class='prof ap'>${[['follow','מעקבים אחריי'],['like','לייקים'],['comment','תגובות על התוכן שלי'],['reply','תשובות לתגובות שלי'],['tag','תיוגים']].map(x=>`<label style='display:flex;gap:10px;padding:6px 0'><input type='checkbox' data-ns='${x[0]}' ${ns[x[0]]===0?'':'checked'}> ${x[1]}</label>`).join('')}</div>`)}
 /* admin */
 function admRow(u){const x=U(u),bl=S.blk[u]>Date.now();return `<div class='ar'>${av(u,36)}<div style='flex:1;min-width:140px'><b>@${esc(u)}</b><br><small style='color:var(--mute)'>${esc(x.email||'משתמש הדגמה')}${bl?' · חסום':''}</small></div>${bl?`<button class='btn o' data-adm='unblock' data-u='${u}'>שחרור חסימה</button>`:`<select class='f bs'><option value='1'>שעה</option><option value='24'>יום</option><option value='168'>שבוע</option><option value='720'>חודש</option><option value='inf'>לצמיתות</option></select><button class='btn o' data-adm='block' data-u='${u}'>חסימה</button>`}<input class='f ms' placeholder='הודעה למשתמש'><button class='btn o' data-adm='msg' data-u='${u}'>שליחה</button><button class='btn o' data-adm='del' data-u='${u}'>מחיקת משתמש</button></div>`}
@@ -486,7 +487,3 @@ window.onhashchange=render;
 </script>
 </body>
 </html>
-
-<!-- Injection By NetFree -->
-<script src="//netfree.link/injection-script/go-payment.js" type="text/javascript" async ></script>
-<script src="//netfree.link/injection-script/popup-card-init.js" type="text/javascript" async ></script>
