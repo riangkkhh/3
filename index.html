@@ -225,6 +225,19 @@ body,button,input,textarea{font-family:Heebo,"Segoe UI",Arial,sans-serif}
 .ap{display:block!important;margin:0 0 14px;max-width:780px;text-align:start!important}.ap>b{display:block;margin-bottom:8px}
 .ar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 0}.ar .f{width:auto;margin:0;display:inline-block;flex:1;min-width:120px}.ar select.f{flex:none;min-width:0}.ar .btn{height:38px;padding:0 14px;font-size:14px}
 .chip{display:inline-flex;gap:6px;align-items:center;background:var(--bg);border-radius:16px;padding:5px 10px;margin:0 0 6px 6px;font-size:13px}.chip a{cursor:pointer;display:grid;color:var(--mute)}.chip a:hover{color:#E5484D}
+/* ===== v7: comments open on the left, smooth ===== */
+.ph{transition:width .42s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1)}
+.vw.wide .ph{transform:translateX(calc(min(92vh,880px)*-.28125))}
+.ph .m{inset:0 0 0 auto;transition:width .42s cubic-bezier(.2,.8,.2,1)}
+.ph>.top{left:14px;right:14px;transition:left .42s cubic-bezier(.2,.8,.2,1)}
+.ph>.bot{left:0;right:0;transition:left .42s cubic-bezier(.2,.8,.2,1)}
+.side{transition:left .42s cubic-bezier(.2,.8,.2,1)}
+.ph .cmp{left:0;right:auto;transform:translateX(-28px);opacity:0;transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.vw.wide .ph .m{left:auto;right:0;width:50%}
+.vw.wide .ph>.top,.vw.wide .ph>.bot{inset-inline:auto;left:50%;right:0}
+.vw.wide .side{left:calc(50% + 14px)}
+.ph>.bot{pointer-events:none}.ph>.bot .who{pointer-events:auto}
+.ph:has(video) .bot{padding-bottom:64px}.ph:has(video) .side{bottom:150px}
 </style>
 </head>
 <body>
@@ -278,7 +291,7 @@ x.shadowColor='transparent';x.fillStyle='rgba(255,255,255,.28)';x.beginPath();x.
 const NAV=[['home','home','דף הבית'],['film','videos','סרטונים'],['image','images','תמונות'],['fire','hot','החמים'],['biz','biz','תוכן עסקי']];
 function shell(){$('#gbtn').innerHTML=I('user',20)+'<span>התחברות עם גוגל</span>';$('#gbtn').onclick=()=>toast('ההתחברות תתווסף בהמשך');
 $('#plus').innerHTML=I('plus',24);$('#plus').onclick=upload;
-P.msg='M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z';P.moon='M21 13A9 9 0 1111 3a7 7 0 0010 10z';P.sun='M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4';
+P.msg='M4 5h16a1 1 0 011 1v10a1 1 0 01-1 1H9l-5 4v-4H4a1 1 0 01-1-1V6a1 1 0 011-1zM8 10h8M8 13h5';P.moon='M21 13A9 9 0 1111 3a7 7 0 0010 10z';P.sun='M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4';
 const rt=document.documentElement,ap=t=>{rt.dataset.theme=t;try{localStorage.setItem('sbt',t)}catch(e){}$('#tg').innerHTML=I(t=='dark'?'sun':'moon',20)};let t0='light';try{t0=localStorage.getItem('sbt')||'light'}catch(e){}ap(t0);$('#tg').onclick=()=>ap(rt.dataset.theme=='dark'?'light':'dark');
 $('#sbox').innerHTML=I('search',20)+'<input id="si" placeholder="חיפוש">';$('#si').oninput=e=>{q=e.target.value.trim();render()};
 $('#logo').onclick=()=>location.hash='home'}
@@ -311,14 +324,14 @@ return `<h2>${I('gear')} הגדרות פרופיל</h2><div class="prof" style="
 <input class="f" id="sn" value="${esc(u.name)}" placeholder="שם"><textarea class="f" id="sa" rows="4" placeholder="אודות">${esc(u.about)}</textarea>
 <p style="color:var(--mute)">${I('heart',16,1)} סה״כ לייקים על התוכן שלך: <b>${n}</b></p><button class="btn" id="ss">שמירה</button></div>`}
 /* viewer */
-function openV(id,list){list=list.length?list:vis();let i=Math.max(0,list.findIndex(p=>p.id==id)),vw=document.createElement('div');vw.className='vw';document.body.appendChild(vw);
+function openV(id,list){list=list.length?list:vis();let i=Math.max(0,list.findIndex(p=>p.id==id)),vw=document.createElement('div');vw.className='vw';document.body.appendChild(vw);document.body.style.overflow='hidden';const prev=(location.hash&&!location.hash.startsWith('#post-'))?location.hash:'#home';
 const show=()=>{const p=list[i];if(!p)return close();const v=p.type=='video';history.replaceState(null,'','#post-'+p.id);
-vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" controls autoplay playsinline></video>`:`<img src="${p.src}" alt="">`}</div>
+vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="-1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" controls autoplay playsinline></video>`:`<img src="${p.src}" alt="">`}</div>
 <div class="top">${p.uid!=ME?`<button class="btn" style="height:34px;padding:0 14px" data-fl="${p.uid}">${fol(ME).includes(p.uid)?'עוקב':'לעקוב'}</button>`:'<span></span>'}<span style="display:flex;gap:6px"><button class="sb" data-edit="${p.id}">${I('edit',16)}</button><button class="sb" data-del="${p.id}">${I('trash',16)}</button></span></div>
 <div class="side"><button class="circ ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',24,S.liked[p.id])}</button><div class="cnt">${lk(p)}</div><button class="circ" data-cm>${I('msg',22)}</button><div class="cnt cc">${(S.cm[p.id]||[]).length}</div><button class="circ" data-share="${p.id}">${I('share',22)}</button></div>
-<div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div>${cmp(p)}</div><button class="arr" data-n="-1">${I('l',22)}</button>`;
-const vd=$('video',vw);detect(vw);if(vd)vd.onended=()=>{const o=document.createElement('div');o.className='outro';o.innerHTML='<canvas></canvas>';$('.ph',vw).appendChild(o);logo($('canvas',o),240,74);setTimeout(()=>{o.remove();vd.currentTime=0;vd.play()},3500)}};
-const close=()=>{vw.remove();document.removeEventListener('keydown',kd);history.replaceState(null,'','#home');render()};
+<div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div>${cmp(p)}</div><button class="arr" data-n="1">${I('l',22)}</button>`;
+const vd=$('video',vw);detect(vw);if(vd)vd.onended=()=>{const o=document.createElement('div');o.className='outro';o.innerHTML='<img src="img/2.png" alt="" style="max-width:60%;max-height:30%;animation:pop .8s both" onerror="this.remove()">';$('.ph',vw).appendChild(o);setTimeout(()=>{o.remove();vd.currentTime=0;vd.play()},3500)}};
+const close=()=>{vw.remove();document.body.style.overflow='';document.removeEventListener('keydown',kd);history.replaceState(null,'',prev);render()};
 const go=n=>{i=(i+n+list.length)%list.length;show()};
 const kd=e=>{if(e.target.tagName=='INPUT'){if(e.key=='Enter'&&e.target.id=='ci')cmAct({dataset:{send:1}},vw,list[i].id);return}if(e.key=='Escape')close();if(e.key=='ArrowRight')go(-1);if(e.key=='ArrowLeft')go(1)};document.addEventListener('keydown',kd);
 vw.onclick=e=>{e.stopPropagation();const t=e.target.closest('button,[data-prof],[data-rp],[data-ce],[data-cd]');if(!t){if(e.target==vw)close();return}
@@ -361,7 +374,7 @@ let blob=file,type=kind||'image';if(type=='image')blob=await wm(file||url,txt);i
 const p={id:'n'+Date.now(),uid:ME,type,desc:$('#u2',b).value,biz:$('#u4',b).checked,ts:Date.now(),blob};idbPut(p);tags(p.desc,'tag',{pid:p.id});p.src=typeof blob=='string'?blob:URL.createObjectURL(blob);posts.push(p);b.remove();location.hash='home';render();toast('פורסם בהצלחה')}}
 function wm(src,txt){return new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{const s=Math.min(1,1600/im.width),w=im.width*s,h=im.height*s,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0,w,h);
 if(txt){x.font=`800 ${w*.07}px "Segoe UI",Arial`;x.textAlign='center';x.fillStyle='#fff';x.strokeStyle='rgba(0,0,0,.7)';x.lineWidth=w*.012;x.strokeText(txt,w/2,h*.88,w*.9);x.fillText(txt,w/2,h*.88,w*.9)}
-const lw=Math.max(120,w*.22),lc=document.createElement('canvas');logo(lc,lw,lw*.31);lc.style.width=lc.width+'px';x.globalAlpha=.9;x.drawImage(lc,w/2-lw/2,h*.02,lw,lw*.31);c.toBlob(b=>res(b),'image/jpeg',.9)}catch(e){res(typeof src=='string'?src:null)}};
+const lg=new Image(),fin=()=>c.toBlob(b=>res(b),'image/jpeg',.9);lg.onload=()=>{try{const lw=Math.max(120,w*.22),lh=lw*lg.height/lg.width;x.globalAlpha=.9;x.drawImage(lg,w/2-lw/2,h*.02,lw,lh)}catch(e){}fin()};lg.onerror=fin;lg.src='img/2.png'}catch(e){res(typeof src=='string'?src:null)}};
 im.onerror=()=>res(typeof src=='string'?src:null);im.src=typeof src=='string'?src:URL.createObjectURL(src)})}
 /* events */
 document.addEventListener('click',e=>{const t=e.target;let a;
@@ -378,7 +391,7 @@ document.addEventListener('change',e=>{if(e.target.id=='avf'){const f=e.target.f
 document.addEventListener('mouseover',e=>{const c=e.target.closest('.card[data-v]');if(c){const v=$('video',c);v&&v.play().catch(()=>{})}});
 document.addEventListener('mouseout',e=>{const c=e.target.closest('.card[data-v]');if(c&&!c.contains(e.relatedTarget)){const v=$('video',c);v&&v.pause()}});
 /* ===== accounts, admin, notifications (all local, localStorage) ===== */
-const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
+const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='908669720823-djgpsa2nugjqpicltbjlpvg94eu460u1.apps.googleusercontent.com';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
 ['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
 try{const m=localStorage.getItem('sbme');if(m&&S.users[m])ME=m}catch(e){}
 Object.assign(P,{bell:'M18 16v-5a6 6 0 10-12 0v5l-2 2h16zM10 21a2 2 0 004 0',shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',eyeoff:'M3 3l18 18M10.6 6.1A9 9 0 0121 12a13 13 0 01-2.6 3.4M6.3 6.4A13 13 0 003 12s3 6 9 6a9 9 0 003.4-.7'});
@@ -392,8 +405,11 @@ function dd(a,h){const o=$('.dd');if(o){o.remove();if(o.dataset.a==a.id)return}c
 /* login */
 function loginModal(){const b=mkModal(`<h3>התחברות <button class='circ' style='width:36px;height:36px' data-c>${I('x',18)}</button></h3><div id='gl' style='display:flex;justify-content:center;min-height:44px'></div><div id='dm' hidden><p style='color:var(--mute);font-size:13px;margin:4px 0 8px'>מצב הדגמה (ללא חיבור לגוגל): הזינו כתובת מייל</p><input class='f' id='le' type='email' dir='ltr' placeholder='name@gmail.com'><button class='btn' id='lb' style='width:100%'>המשך</button></div>`,1);
 const demo=()=>{$('#dm',b).hidden=false;$('#lb',b).onclick=()=>{const m=$('#le',b).value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m))return toast('כתובת מייל לא תקינה');b.remove();finishLogin(m)}};
-const gs=()=>{google.accounts.id.initialize({client_id:CLIENT_ID,callback:r=>{try{const j=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));b.remove();finishLogin(j.email.toLowerCase())}catch(x){toast('ההתחברות נכשלה')}}});google.accounts.id.renderButton($('#gl',b),{theme:'outline',size:'large',text:'signin_with',locale:'he'})};
-if(!CLIENT_ID)return demo();if(window.google&&google.accounts)return gs();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=gs;s.onerror=demo;document.head.appendChild(s)}
+const gs=()=>{google.accounts.id.initialize({client_id:CLIENT_ID,callback:r=>{let m;try{const j=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));m=j.email.toLowerCase()}catch(x){console.error(x);return toast('ההתחברות נכשלה')}b.remove();finishLogin(m)}});google.accounts.id.renderButton($('#gl',b),{theme:'outline',size:'large',text:'signin_with',locale:'he'})};
+if(!CLIENT_ID)return demo();
+const dg=document.createElement('p');dg.style.cssText='color:var(--mute);font-size:12px;margin:10px 0 0;text-align:center';dg.dir='ltr';dg.textContent='origin: '+location.origin;$('.mod',b).appendChild(dg);
+setTimeout(()=>{if(!$('#gl iframe',b)&&document.body.contains(b)){dg.textContent='';const m=document.createElement('p');m.style.cssText='color:#E5484D;direction:rtl;margin:0 0 6px';m.textContent='הכפתור של גוגל לא נטען. בדקו שהכתובת שמופיעה כאן מופיעה בדיוק ב-Authorized JavaScript origins (בלי / בסוף ובלי נתיב), ושהאתר ב-https.';dg.append(m,'origin: '+location.origin);demo()}},4000);
+if(window.google&&google.accounts)return gs();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=true;s.onload=()=>{try{gs()}catch(x){console.error(x);dg.textContent='GSI error: '+x.message;demo()}};s.onerror=()=>{console.error('GSI script blocked');dg.textContent='script blocked';demo()};document.head.appendChild(s)}
 function finishLogin(m){const u=S.acc[m];if(u&&S.users[u])return setMe(u);if(m==ADMIN_EMAIL){S.users.mont_blanc=Object.assign(S.users.mont_blanc||{name:'mont_blanc',about:'',hue:22},{email:m});S.acc[m]='mont_blanc';save();return setMe('mont_blanc')}nameModal(m)}
 function setMe(u){ME=u;try{localStorage.setItem('sbme',u)}catch(e){}authUI();render();showBc();toast('מחובר בתור '+U(u).name)}
 function logout(){ME='';try{localStorage.removeItem('sbme')}catch(e){}authUI();location.hash='home';render()}
