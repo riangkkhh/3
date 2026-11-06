@@ -342,7 +342,7 @@ return `<h2>${I('gear')} הגדרות פרופיל</h2><div class="prof" style="
 /* viewer */
 function openV(id,list){list=list.length?list:vis();let i=Math.max(0,list.findIndex(p=>p.id==id)),vw=document.createElement('div');vw.className='vw';document.body.appendChild(vw);document.body.style.overflow='hidden';const prev=(location.hash&&!location.hash.startsWith('#post-'))?location.hash:'#home';
 const show=()=>{clearTimeout(vw._t);cancelAnimationFrame(vw._r);const p=list[i];if(!p)return close();const v=p.type=='video';history.replaceState(null,'','#post-'+p.id);
-vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="-1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" autoplay playsinline disablepictureinpicture controlslist="nodownload noremoteplayback" oncontextmenu="return false"></video>`:`<img src="${p.src}" alt="">`}</div><div class="vp"><i></i></div><div class="pp">${I('play',30,1)}</div>
+vw.innerHTML=`<button class="circ xx" data-x>${I('x',22)}</button><button class="arr" data-n="-1">${I('r',22)}</button><div class="ph"><div class="m">${v?`<video src="${p.src}" crossorigin="anonymous" autoplay playsinline disablepictureinpicture controlslist="nodownload noremoteplayback" oncontextmenu="return false"></video>`:`<img src="${p.src}" crossorigin="anonymous" alt="">`}</div><div class="vp"><i></i></div><div class="pp">${I('play',30,1)}</div>
 <div class="top">${p.uid!=ME?`<button class="btn" style="height:34px;padding:0 14px" data-fl="${p.uid}">${fol(ME).includes(p.uid)?'עוקב':'לעקוב'}</button>`:'<span></span>'}<span style="display:flex;gap:6px"><button class="sb" data-edit="${p.id}">${I('edit',16)}</button><button class="sb" data-del="${p.id}">${I('trash',16)}</button></span></div>
 <div class="side"><button class="circ ${S.liked[p.id]?'on':''}" data-like="${p.id}">${I('heart',24,S.liked[p.id])}</button><div class="cnt">${lk(p)}</div><button class="circ" data-cm>${I('msg',22)}</button><div class="cnt cc">${(S.cm[p.id]||[]).length}</div><button class="circ" data-share="${p.id}">${I('share',22)}</button></div>
 <div class="bot"><div class="who" style="cursor:pointer" data-prof="${p.uid}">${av(p.uid,34)}<span>@${esc(U(p.uid).name)}</span></div>${p.desc?`<p style="margin:8px 0 0;font-size:14px">${esc(p.desc)}</p>`:''}</div>${cmp(p)}</div><button class="arr" data-n="1">${I('l',22)}</button>`;
@@ -408,6 +408,7 @@ document.addEventListener('change',e=>{if(e.target.id=='avf'){const f=e.target.f
 document.addEventListener('mouseover',e=>{const c=e.target.closest('.card[data-v]');if(c){const v=$('video',c);v&&v.play().catch(()=>{})}});
 document.addEventListener('mouseout',e=>{const c=e.target.closest('.card[data-v]');if(c&&!c.contains(e.relatedTarget)){const v=$('video',c);v&&v.pause()}});
 /* ===== accounts, admin, notifications (all local, localStorage) ===== */
+const API_URL='';/* כתובת השרת, למשל https://sharebe.xxxx.ts.net  (ריק = מצב מקומי בלי שרת) */
 const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='908669720823-djgpsa2nugjqpicltbjlpvg94eu460u1.apps.googleusercontent.com';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
 ['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});['u1','u2','u3','u4'].forEach(k=>{if(S.users[k]&&!S.users[k].email){delete S.users[k];delete S.fol[k]}});Object.keys(S.fol).forEach(k=>S.fol[k]=(S.fol[k]||[]).filter(x=>S.users[x]));S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
 try{const m=localStorage.getItem('sbme');if(m&&S.users[m])ME=m}catch(e){}
@@ -421,8 +422,8 @@ function mkModal(h,close){const b=document.createElement('div');b.className='bg'
 function dd(a,h){const o=$('.dd');if(o){o.remove();if(o.dataset.a==a.id)return}const r=a.getBoundingClientRect(),d=document.createElement('div');d.className='dd';d.dataset.a=a.id;d.style.cssText='top:'+(r.bottom+8)+'px;left:'+Math.max(8,Math.min(r.left,innerWidth-340))+'px';d.innerHTML=h;document.body.appendChild(d)}
 /* login */
 function loginModal(){const b=mkModal(`<button class='lgx' data-c aria-label='סגירה'>${I('x',18)}</button><div class='lgb'>${I('share',30)}</div><h3 class='lgt'>ברוכים הבאים</h3><p class='lgs'>התחברו כדי לתת לייק, להגיב, לעקוב ולשתף</p><div id='gl' style='display:flex;justify-content:center;min-height:44px'></div><div class='lgf'><span><i>${I('heart',18)}</i>לייקים</span><span><i>${I('msg',18)}</i>תגובות</span><span><i>${I('user',18)}</i>מעקב</span><span><i>${I('bell',18)}</i>התראות</span></div><div id='dm' hidden><p style='color:var(--mute);font-size:13px;margin:4px 0 8px'>מצב הדגמה (ללא חיבור לגוגל): הזינו כתובת מייל</p><input class='f' id='le' type='email' dir='ltr' placeholder='name@gmail.com'><button class='btn' id='lb' style='width:100%'>המשך</button></div>`,1);
-const demo=()=>{$('#dm',b).hidden=false;$('#lb',b).onclick=()=>{const m=$('#le',b).value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m))return toast('כתובת מייל לא תקינה');b.remove();finishLogin(m)}};
-const gs=()=>{google.accounts.id.initialize({client_id:CLIENT_ID,callback:r=>{let m;try{const j=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));m=j.email.toLowerCase()}catch(x){console.error(x);return toast('ההתחברות נכשלה')}b.remove();finishLogin(m)}});google.accounts.id.renderButton($('#gl',b),{theme:'filled_blue',size:'large',shape:'pill',width:300,text:'continue_with',locale:'he',logo_alignment:'left'})};
+const demo=()=>{$('#dm',b).hidden=false;$('#lb',b).onclick=()=>{const m=$('#le',b).value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m))return toast('כתובת מייל לא תקינה');b.remove();finishLogin(m,'dev:'+m)}};
+const gs=()=>{google.accounts.id.initialize({client_id:CLIENT_ID,callback:r=>{let m;try{const j=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));m=j.email.toLowerCase()}catch(x){console.error(x);return toast('ההתחברות נכשלה')}b.remove();finishLogin(m,r.credential)}});google.accounts.id.renderButton($('#gl',b),{theme:'filled_blue',size:'large',shape:'pill',width:300,text:'continue_with',locale:'he',logo_alignment:'left'})};
 if(!CLIENT_ID)return demo();
 const dg=document.createElement('p');dg.style.cssText='color:var(--mute);font-size:12px;margin:10px 0 0;text-align:center';dg.dir='ltr';dg.textContent='origin: '+location.origin;$('.mod',b).appendChild(dg);
 setTimeout(()=>{if(!$('#gl iframe',b)&&document.body.contains(b)){dg.textContent='';const m=document.createElement('p');m.style.cssText='color:#E5484D;direction:rtl;margin:0 0 6px';m.textContent='הכפתור של גוגל לא נטען. בדקו שהכתובת שמופיעה כאן מופיעה בדיוק ב-Authorized JavaScript origins (בלי / בסוף ובלי נתיב), ושהאתר ב-https.';dg.append(m,'origin: '+location.origin);demo()}},4000);
@@ -491,6 +492,46 @@ document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.datase
 document.addEventListener('input',e=>{const el=e.target;if(!el.matches||!el.matches('#u2,#ci,.mod textarea'))return;const o=$('.mn');o&&o.remove();const v=el.value.slice(0,el.selectionStart),m=v.match(/@([A-Za-z0-9_]*)$/);if(!m)return;const q=m[1].toLowerCase(),l=Object.keys(S.users).filter(u=>u.toLowerCase().startsWith(q)).slice(0,6);if(!l.length)return;const r=el.getBoundingClientRect(),d=document.createElement('div');d.className='mn';d.style.cssText='left:'+r.left+'px;top:'+(r.bottom+4)+'px;width:'+Math.max(r.width,200)+'px';d.innerHTML=l.map(u=>`<a data-mu='${u}'>${av(u,24)}<span dir='ltr'>@${u}</span></a>`).join('');document.body.appendChild(d);
 d.onmousedown=ev=>{const a=ev.target.closest('[data-mu]');if(!a)return;ev.preventDefault();const pos=el.selectionStart,s=v.slice(0,v.length-m[1].length)+a.dataset.mu+' ';el.value=s+el.value.slice(pos);el.setSelectionRange(s.length,s.length);d.remove();el.focus()}});
 document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('video,.ph'))e.preventDefault()});
+/* ===== server mode (set API_URL above) ===== */
+const API=API_URL.replace(/[/]+$/,'');let TOK='';try{TOK=localStorage.getItem('sbtok')||''}catch(e){}
+async function api(path,body){const r=await fetch(API+'/api/'+path,{method:body===undefined?'GET':'POST',headers:Object.assign({},body===undefined?{}:{'Content-Type':'application/json'},TOK?{Authorization:'Bearer '+TOK}:{}),body:body===undefined?undefined:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||('שגיאה '+r.status));return j}
+let lastSig='';
+function applyState(s){S.users=s.users;S.fol=s.fol;S.cm=s.cm;S.liked={};s.liked.forEach(x=>S.liked[x]=true);S.likes={};S.hid={};S.del=[];S.ed={};S.blk=s.blk;S.up=s.up;S.bz=s.bz;S.bc=s.bc;S.nt={};ME=s.me||'';if(ME)S.nt[ME]=s.nt;
+posts.length=0;s.posts.forEach(p=>{S.likes[p.id]=p.likes;if(p.hidden)S.hid[p.id]=1;posts.push({id:p.id,uid:p.uid,type:p.type,src:API+'/media/'+p.id,desc:p.desc,biz:!!p.biz,ts:p.ts,base:0})})}
+async function pull(first){try{const s=await api('state'),sig=JSON.stringify(s);if(sig===lastSig&&!first)return false;lastSig=sig;applyState(s);return true}catch(e){console.error(e);if(first)toast('אין חיבור לשרת');return false}}
+async function sync(){await pull();$('.vw')?authUI():render()}
+function nameModalOnline(m,sug){nameModal(m);const b=[...document.querySelectorAll('.bg')].pop();if(sug)$('#nu',b).value=sug;$('#nb',b).onclick=async()=>{const v=$('#nu',b).value.trim();if(!/^[A-Za-z0-9_]{3,24}$/.test(v)){$('#ne',b).textContent='3 עד 24 תווים: אותיות באנגלית, מספרים ו-_ בלבד';return}try{await api('username',{username:v});await pull(true);b.remove();setMe(v)}catch(e){$('#ne',b).textContent=e.message}}}
+if(API){
+idb=function(){return pull(true)};idbAll=async function(){return[]};notify=function(){};
+toggleLike=function(id){if(!ME)return;const w=!!S.liked[id];S.liked[id]=!w;S.likes[id]=(S.likes[id]||0)+(w?-1:1);api('like',{pid:id}).then(sync).catch(e=>{toast(e.message);sync()})};
+toggleFol=function(id){const a=S.fol[ME]=S.fol[ME]||[],i=a.indexOf(id);i<0?a.push(id):a.splice(i,1);api('follow',{uid:id}).then(sync).catch(e=>{toast(e.message);sync()})};
+delP=function(id){if(!confirm('למחוק את הפריט?'))return;S.del.push(id);api('post/delete',{id}).then(sync).catch(e=>toast(e.message));toast('נמחק')};
+const _ed=editD;editD=function(id,cb){_ed(id,()=>{api('post/edit',{id,desc:S.ed[id]}).then(sync).catch(e=>toast(e.message));cb?cb():render()})};
+cmAct=async function(t,vw,id){const d=t.dataset,L=()=>{if(!$('.cml',vw))return;$('.cml',vw).innerHTML=cml(id);$('.cc',vw).textContent=(S.cm[id]||[]).length};
+try{if(d.send){const i=$('#ci',vw),v=i.value.trim();if(!v)return;i.value='';if(ED){await api('comment/edit',{id:ED,t:v});ED=null}else await api('comment',{pid:id,t:v,q:QT});QT=null;$('.qt',vw).innerHTML='';await pull();L();const l=$('.cml',vw);if(l)l.scrollTop=l.scrollHeight}
+else if(d.rp){const c=(S.cm[id]||[]).find(x=>x.id==d.rp);QT=c.t.slice(0,90);ED=null;$('.qt',vw).innerHTML='<span>'+esc(QT)+'</span>';$('#ci',vw).focus()}
+else if(d.cd){await api('comment/delete',{id:d.cd});await pull();L()}
+else if(d.ce){const c=(S.cm[id]||[]).find(x=>x.id==d.ce);ED=c.id;QT=null;$('.qt',vw).innerHTML='';const i=$('#ci',vw);i.value=c.t;i.focus()}}catch(e){toast(e.message)}};
+const _up3=upload;upload=function(){_up3();const b=[...document.querySelectorAll('.bg')].pop();$('#go',b).onclick=async()=>{const btn=$('#go',b),txt=$('#u3',b).value,url=$('#u1',b).value.trim(),pv=$('#pv img,#pv video',b);let blob,type;
+try{if(pv){type=pv.tagName=='VIDEO'?'video':'image';blob=await(await fetch(pv.src)).blob();if(type=='image')blob=await wm(blob,txt)}else if(url){type='image';blob=await wm(url,txt);if(typeof blob=='string')throw new Error('לא ניתן לעבד תמונה מכתובת חיצונית')}else return toast('בחרו קובץ או הזינו כתובת');
+if(!blob)throw new Error('העיבוד נכשל');btn.disabled=true;btn.textContent='מעלה...';
+const meta=encodeURIComponent(JSON.stringify({type,desc:$('#u2',b).value,biz:$('#u4',b).checked})),r=await fetch(API+'/api/post',{method:'POST',headers:{Authorization:'Bearer '+TOK,'Content-Type':blob.type||'application/octet-stream','X-Meta':meta},body:blob}),j=await r.json().catch(()=>({}));
+if(!r.ok)throw new Error(j.error||'ההעלאה נכשלה');await pull();b.remove();location.hash='home';render();toast('פורסם בהצלחה')}catch(e){btn.disabled=false;btn.textContent='פרסום';toast(e.message)}}};
+finishLogin=async function(m,cred){try{const r=await api('login',{credential:cred});TOK=r.token;try{localStorage.setItem('sbtok',TOK)}catch(e){}await pull(true);if(r.uid)setMe(r.uid);else nameModalOnline(m,r.suggest)}catch(e){toast('ההתחברות נכשלה: '+e.message)}};
+logout=async function(){TOK='';try{localStorage.removeItem('sbtok')}catch(e){}await pull(true);authUI();location.hash='home';render()};
+const _bt=bellToggle;bellToggle=function(){_bt();api('notif/read',{}).catch(()=>{})};
+document.addEventListener('click',e=>{if(!isAdmin())return;const t=e.target;let a;
+if(a=t.closest('[data-adm]')){const u=a.dataset.u,k=a.dataset.adm,r=a.closest('.ar');if(k=='block')api('admin/block',{uid:u,hours:$('select',r).value}).then(sync);else if(k=='unblock')api('admin/block',{uid:u,hours:0}).then(sync);else if(k=='msg'){const v=$('.ms',r).value.trim();if(v)api('admin/msg',{uid:u,text:v})}else if(k=='del'&&a.dataset.s)api('admin/deluser',{uid:u}).then(sync)}
+else if(a=t.closest('[data-bc]')){const on=a.dataset.bc=='1',v=$('#bct').value.trim();if(on&&!v)return;api('admin/bc',{text:on?v:''}).then(sync)}
+else if(a=t.closest('[data-add]')){const k=a.dataset.add,v=$(k=='up'?'#eu':'#eb').value.trim().toLowerCase();if(v)api('admin/allow',{kind:k,email:v,on:1}).then(sync).catch(x=>toast(x.message))}
+else if(a=t.closest('[data-rm]'))api('admin/allow',{kind:a.dataset.l,email:a.dataset.rm,on:0}).then(sync)
+else if(a=t.closest('[data-restore]'))api('admin/hide',{pid:a.dataset.restore,hidden:0}).then(sync)
+else if(a=t.closest('[data-hide]'))api('admin/hide',{pid:a.dataset.hide,hidden:1}).then(sync)},true);
+document.addEventListener('click',e=>{if(e.target.id=='ss')api('profile',{name:$('#sn').value,about:$('#sa').value}).then(sync).catch(x=>toast(x.message))});
+document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.ns;if(k&&ME)api('settings',{ns:S.users[ME].ns}).catch(()=>{});
+if(e.target.id=='avf'&&e.target.files[0]){const im=new Image();im.onload=async()=>{const c=document.createElement('canvas'),s=Math.min(1,200/Math.max(im.width,im.height));c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);try{await api('profile',{img:c.toDataURL('image/jpeg',.85)});await sync()}catch(x){toast(x.message)}};im.src=URL.createObjectURL(e.target.files[0])}});
+setInterval(async()=>{if(!document.hidden&&await pull()){$('.vw')?authUI():render()}},20000);
+}
 window.onhashchange=render;
 (async()=>{seed();await idb();(await idbAll()).forEach(p=>{p.src=typeof p.blob=='string'?p.blob:URL.createObjectURL(p.blob);posts.push(p)});shell();render()})();
 </script>
