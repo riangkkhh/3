@@ -408,7 +408,7 @@ document.addEventListener('change',e=>{if(e.target.id=='avf'){const f=e.target.f
 document.addEventListener('mouseover',e=>{const c=e.target.closest('.card[data-v]');if(c){const v=$('video',c);v&&v.play().catch(()=>{})}});
 document.addEventListener('mouseout',e=>{const c=e.target.closest('.card[data-v]');if(c&&!c.contains(e.relatedTarget)){const v=$('video',c);v&&v.pause()}});
 /* ===== accounts, admin, notifications (all local, localStorage) ===== */
-const API_URL='';/* כתובת השרת, למשל https://sharebe.xxxx.ts.net  (ריק = מצב מקומי בלי שרת) */
+const API_URL='https://sharebe.tailaea71f.ts.net/';/* כתובת השרת, למשל https://sharebe.xxxx.ts.net  (ריק = מצב מקומי בלי שרת) */
 const ADMIN_EMAIL='mont.b335@gmail.com',CLIENT_ID='908669720823-djgpsa2nugjqpicltbjlpvg94eu460u1.apps.googleusercontent.com';/* CLIENT_ID: put your Google OAuth client id here when self-hosting */
 ['acc','nt','blk','hid','seen'].forEach(k=>S[k]=S[k]||{});['u1','u2','u3','u4'].forEach(k=>{if(S.users[k]&&!S.users[k].email){delete S.users[k];delete S.fol[k]}});Object.keys(S.fol).forEach(k=>S.fol[k]=(S.fol[k]||[]).filter(x=>S.users[x]));S.up=S.up||[];S.bz=S.bz||[];S.bc=S.bc||null;
 try{const m=localStorage.getItem('sbme');if(m&&S.users[m])ME=m}catch(e){}
